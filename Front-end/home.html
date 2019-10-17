@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <script src="https://sdk.amazonaws.com/js/aws-sdk-2.547.0.min.js"></script>
+   <script type="text/javascript" src="lib/axios/dist/axios.standalone.js"></script> 
+   <script type="text/javascript" src="lib/CryptoJS/rollups/hmac-sha256.js"></script> 
+   <script type="text/javascript" src="lib/CryptoJS/rollups/sha256.js"></script> 
+   <script type="text/javascript" src="lib/CryptoJS/components/hmac.js"></script> 
+   <script type="text/javascript" src="lib/CryptoJS/components/enc-base64.js"></script> 
+   <script type="text/javascript" src="lib/url-template/url-template.js"></script> 
+   <script type="text/javascript" src="lib/apiGatewayCore/sigV4Client.js"></script> 
+   <script type="text/javascript" src="lib/apiGatewayCore/apiGatewayClient.js"></script> 
+   <script type="text/javascript" src="lib/apiGatewayCore/simpleHttpClient.js"></script> 
+   <script type="text/javascript" src="lib/apiGatewayCore/utils.js"></script> <script type="text/javascript" src="apigClient.js"></script>
+
+  <title>NYU Food Recommendations</title>
+
+  <link rel="stylesheet" type="text/css" href="home.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+  <!--link rel="shortcut icon" type="image/icon" href="favicon.ico" --> 
+  <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css' integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'>
+  
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+</head>
+
+<body>
+  <div id="center-text">
+    <img src="nyu.png" alt="NYU" style="width: 220px; border-radius: 10px; -webkit-box-shadow: 4px 6px 8px 10px rgba(0,0,0,0.2); -moz-box-shadow: 4px 6px 8px 10px rgba(0,0,0,0.2); box-shadow: 4px 6px 8px 10px rgba(0,0,0,0.2);">
+    <h2 style="font-family: 'Word Sans', sans-serif; font-size: 56px;font-weight: bold;margin-top: 70px;">NYU Food Recommendations</h2>
+    <h2 style="color: #21abf3;">Welcome to the New York University's conversational AI Platform</h2>
+  </div> 
+<div id="body"> 
+  
+<div id="chat-circle" class="btn btn-raised">
+        <div id="chat-overlay"></div>
+        <i class="material-icons">message</i>
+  </div>
+  
+  <div class="chat-box">
+    <div class="chat-box-header">
+      <div class=".chat-head-img">
+        <img src="nyu.png" alt="NYU" class="img-head">
+      </div>
+      <div class=".chat-head-text">
+        <h1 class="text-head">New York University </h1>
+      </div>
+      <div class="point"></div>
+      <div class="chat-head-icon chat-box-toggle">
+        <i class="far fa-times-circle" style="font-size: 22px;"></i>
+      </div>
+    </div>
+    <div class="chat-box-body">
+      <div class="chat-box-overlay">   
+        <h5 style="font-family: 'Word Sans', sans-serif; font-weight: normal; margin-bottom: 110px; float: right; margin-left: 200px; bottom: 0; position: fixed;"><span style="opacity: 0.6; font-size: 15px; ">Powered By</span> <span style="opacity: 0.9;"><img src="nyu.png" alt="NYU" style="width: 30px;"></span> <span style="opacity: 0.6; color: #21abf3; font-weight: bold; font-size: 14px;">NYU</span> </h5>
+      </div>
+      <div class="chat-logs">
+       
+      </div><!--chat-log -->
+    </div>
+
+
+    <div class="chat-box-bottom">
+      <div class="chat-box-bottom-icon">
+        <i class="fas fa-bars ico-bot" style=""></i>
+      </div>
+      <div class="chat-box-bottom-input">
+        <form>
+          <textarea name="chat" class="input-bottom but-send" placeholder="Type your message..." onclick="" id="chat-input"></textarea>
+        <button type="submit" class="chat-submit" id="chat-submit"><i class="material-icons ico-bot-send">send</i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+
+<script>
+  var INDEX = 0; 
+$(function() {
+  
+  var emojis = [0x1F600, 0x1F604, 0x1F34A, 0x1F344, 0x1F37F, 0x1F363, 0x1F370, 0x1F355, 0x1F354, 0x1F35F, 0x1F6C0, 0x1F48E, 0x1F5FA, 0x23F0, 0x1F579, 0x1F4DA, 0x1F431, 0x1F42A, 0x1F439, 0x1F424];
+  
+  
+  
+  function generate_button_message(msg, buttons){    
+    /* Buttons should be object array 
+      [
+        {
+          name: 'Existing User',
+          value: 'existing'
+        },
+        {
+          name: 'New User',
+          value: 'new'
+        }
+      ]
+    */
+    INDEX++;
+    var btn_obj = buttons.map(function(button) {
+       return  "              <li class=\"button\"><a href=\"javascript:;\" class=\"btn btn-primary chat-btn\" chat-value=\""+button.value+"\">"+button.name+"<\/a><\/li>";
+    }).join('');
+    var str="";
+    str += "<div id='cm-msg-"+INDEX+"' class=\"chat-msg user\">";
+    str += "        <\/span>";
+    str += "          <div class=\"cm-msg-text\">";
+    str += msg;
+    str += "          <\/div>";
+    str += "          <div class=\"cm-msg-button\">";
+    str += "            <ul>";   
+    str += btn_obj;
+    str += "            <\/ul>";
+    str += "          <\/div>";
+    str += "        <\/div>";
+    $(".chat-logs").append(str);
+    $("#cm-msg-"+INDEX).hide().fadeIn(300);   
+    $(".chat-logs").stop().animate({ scrollTop: $(".chat-logs")[0].scrollHeight}, 1000);
+    $("#chat-input").attr("disabled", true);
+  }
+  
+  $(document).delegate(".chat-btn", "click", function() {
+    var value = $(this).attr("chat-value");
+    console.log(value);
+    var name = $(this).html();
+    $("#chat-input").attr("disabled", false);
+    generate_message(name, 'self');
+  })
+
+  $('#chat-submit').click(function(e) {
+	e.preventDefault();
+	console.log(e);
+	debugger;
+    var msg = $("#chat-input").val(); 
+    console.log(msg)
+    if(msg.trim() == ''){
+      return false;
+	}
+	setTimeout(function() {  
+    generate_message(msg, 'self');
+    userMessage(msg);
+	}, 1000)
+
+	setTimeout(function() {  
+    chatbotResponse();
+	  }, 1000)
+})
+  
+  $("#chat-circle").click(function() {    
+    $("#chat-circle").toggle('scale');
+    $(".chat-box").toggle('scale');
+  })
+  
+  $(".chat-box-toggle").click(function() {
+    $("#chat-circle").toggle('scale');
+    $(".chat-box").toggle('scale');
+  })
+  
+})
+
+
+</script>
+-->
+<script src= "main.js" type="text/javascript"></script>
+</body>
+</html>
