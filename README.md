@@ -1,1 +1,1 @@
-# Dining-Suggestions-Repository
+# Dining-Suggestions-Chatbot
