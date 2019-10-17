@@ -1,1 +1,1 @@
-# Dinind-Suggestions-Repository
+# Dining-Suggestions-Repository
