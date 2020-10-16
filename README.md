@@ -5,6 +5,8 @@ This is a serverless, micro service-driven web application created completely us
 ## Demo ##
 Please visit [here](http://yelpbot.s3.amazonaws.com/home.html) for the Chatbot Link. 
 
+This bot is designed to provide dining recommendations. The recommendation process can be invoked by sending messages like "Dinner in Manhattan", "Food in Brooklyn", etc.
+
 ## Architecture Diagram ##
 ![Architecture Diagram](https://github.com/palakraman17/Dining-Suggestions-Chatbot/blob/master/DiningChatBot_Arch.png)
 
