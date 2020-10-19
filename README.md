@@ -9,8 +9,8 @@ This bot is designed to provide dining recommendations. The recommendation proce
 
 ## Services Used ##
 
-*Amazon S3 - To host the frontend
-*Amazon Lex - To create the bot and define the intents
+* Amazon S3 - To host the frontend
+* Amazon Lex - To create the bot and define the intents
 API Gateway -  To setup the API
 Amazon SQS - To push the
 information collected from the user (location, cuisine, etc.) 
