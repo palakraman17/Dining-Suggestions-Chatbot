@@ -11,13 +11,12 @@ This bot is designed to provide dining recommendations. The recommendation proce
 
 * Amazon S3 - To host the frontend
 * Amazon Lex - To create the bot and define the intents
-API Gateway -  To setup the API
-Amazon SQS - To push the
-information collected from the user (location, cuisine, etc.) 
-ElasticSearch - To fetch restaurant ids based on user preferences
-DynamoDB - Store the restaurant data collected using Yelp API
-Amazon SNS - Send restaurant suggestions to user through SMS
-Lambda - To send data from the frontend to API and API to Lex, validation, collecting restaurant data, sending suggestions using SNS.
+* API Gateway -  To setup the API
+* Amazon SQS - To push theinformation collected from the user (location, cuisine, etc.) 
+* ElasticSearch - To fetch restaurant ids based on user preferences
+* DynamoDB - Store the restaurant data collected using Yelp API
+* Amazon SNS - Send restaurant suggestions to user through SMS
+* Lambda - To send data from the frontend to API and API to Lex, validation, collecting restaurant data, sending suggestions using SNS.
 
 
 ## Architecture Diagram ##
